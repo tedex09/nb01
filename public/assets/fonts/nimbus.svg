@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2025 by original authors @ fontello.com</metadata>
+<defs>
+<font id="nimbus" horiz-adv-x="1000" >
+<font-face font-family="nimbus" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="series" unicode="&#xe800;" d="M1324 794c-7 37-10 64-45 55l-1229-252-6 0a65 65 0 0 1-44-64v-618a65 65 0 0 1 65-65h1191a65 65 0 0 1 65 65v618a65 65 0 0 1-65 65h-459l507 113c35 9 27 44 20 83z m-885-325l-155-180h-154v179z m752-488h-1061v178h1061z m-125 487h125v-179h-281z m-325-179h-286l156 179h283z" horiz-adv-x="1330" />
+
+<glyph glyph-name="movies" unicode="&#xe801;" d="M1307-20h-47l37 99a65 65 0 0 1 38 59v427a65 65 0 0 1-65 65h-9l36 90h12c35 0 33 30 33 65s0 65-33 65h-1274c-35 0-35-29-35-65s0-65 32-65h87l-34-90h-20a65 65 0 0 1-65-65v-428a65 65 0 0 1 65-65h54l-35-92h-49c-34 0-32-30-32-65s0-65 32-65h1272c34 0 32 29 32 65s2 65-32 65z m-306 0l37 92h120l-34-94z m-260 0l37 92h121l-34-94z m-259 0l37 92h119l-35-92z m-352 222v298h1076v-298z m508 518l-34-90h-121l36 90z m259 0l-34-90h-121l36 90z m226-90h-122l37 90h121z m-864 90h119l-34-90h-121z m0-648h119l-34-92h-122z" horiz-adv-x="1339" />
+
+<glyph glyph-name="tv" unicode="&#xe802;" d="M1307 93h-1240a67 67 0 0 0-67 68v622a67 67 0 0 0 67 67h1240a67 67 0 0 0 68-67v-622a67 67 0 0 0-68-68z m-1172 135h1105v487h-1105z m15-378c-30 0-35 22-43 52s-12 67 24 80a2165 2165 0 0 0 549 68h11a1987 1987 0 0 0 540-68c35-11 33-46 22-82s-27-57-62-47a2044 2044 0 0 1-511 62 2080 2080 0 0 1-512-62 98 98 0 0 0-18-3z" horiz-adv-x="1375" />
+</font>
+</defs>
+</svg>
