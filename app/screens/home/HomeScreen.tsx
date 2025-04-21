@@ -1,4 +1,3 @@
-// HomeScreen.tsx
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
@@ -75,13 +74,13 @@ export default function HomeScreen() {
 
         <div className="flex gap-[0.3vw] items-center h-[34vw]">
           
-          <CardComponent id="tv" icon="tv" title="Canais" subtitle="+1000 canais" />
+          <CardComponent id="tv" icon="tv" titleKey="card.home1.title" subtitleKey="card.home1.subtitle" />
           
           <LazyHydrate whenVisible>
-            <CardComponent id="movies" icon="movies" title="Filmes" subtitle="+12000 filmes" />
+            <CardComponent id="movies" icon="movies" titleKey="card.home2.title" subtitleKey="card.home2.subtitle" />
           </LazyHydrate>
           <LazyHydrate whenVisible>
-            <CardComponent id="radio" icon="series" title="Séries" subtitle="+3000 séries" />
+            <CardComponent id="radio" icon="series" titleKey="card.home3.title" subtitleKey="card.home3.subtitle" />
           </LazyHydrate>
         </div>
 

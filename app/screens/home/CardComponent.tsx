@@ -3,17 +3,20 @@
 import { motion } from "framer-motion";
 import { useFocusable } from "@noriginmedia/norigin-spatial-navigation";
 import { useAppStore } from "@/store/useAppStore";
+import { useTranslation } from "react-i18next";
+import { useLang } from "@/hooks/useLang";
 
 interface CardProps {
   id: string;
   icon: string;
-  title: string;
-  subtitle: string;
+  titleKey: string;
+  subtitleKey: string;
   delay?: number;
   isNew?: boolean;
 }
 
-export const CardComponent = ({ id, icon: Icon, title, subtitle }: CardProps) => {
+export const CardComponent = ({ id, icon: Icon, titleKey, subtitleKey }: CardProps) => {
+  const { t } = useLang();
   const { selectedCard, setSelectedCard, updateLastUpdate } = useAppStore();
   const { ref, focused } = useFocusable({
     onEnterPress: () => handleClick(),
@@ -92,10 +95,10 @@ export const CardComponent = ({ id, icon: Icon, title, subtitle }: CardProps) =>
           className={`font-bold mb-2 text-slate-300 ${focused ? "text-[3vw]" : "text-[2vw]"} transition-all duration-300`}
           layout="position"
         >
-          {title}
+          {t(titleKey)}
         </motion.h2>
         <motion.p className="text-slate-600 font-light text-[1.3vw]" layout="position">
-          {subtitle}
+          {t(subtitleKey)}
         </motion.p>
       </motion.div>
     </motion.div>
