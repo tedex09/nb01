@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { useFocusable } from "@noriginmedia/norigin-spatial-navigation";
 import { useAppStore } from "@/store/useAppStore";
-import { useTranslation } from "react-i18next";
 import { useLang } from "@/hooks/useLang";
 
 interface CardProps {
