@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Red_Hat_Display } from 'next/font/google';
+import SpatialNavigationInit from '@/providers/SpatialNavigationInit';
 
 const sora = Red_Hat_Display({ 
   subsets: ['latin'],
@@ -19,7 +20,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={sora.className}>{children}</body>
+      <body className={sora.className}>
+        <SpatialNavigationInit />
+        {children}
+      </body>
     </html>
   );
 }
