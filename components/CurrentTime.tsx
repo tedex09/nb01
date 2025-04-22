@@ -1,4 +1,3 @@
-// screens/home/CurrentTime.tsx
 "use client";
 
 import { useEffect, useState } from "react";

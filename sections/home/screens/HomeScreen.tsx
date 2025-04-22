@@ -14,9 +14,9 @@ import bg from '@/public/images/bg.png';
 
 // Skeletons refinados
 import { CardComponent } from "../components/CardComponent";
-import { SkeletonTime } from "@/components/ui/skeletons/SkeletonTime";
+import { SkeletonTime } from "@ui/skeletons/SkeletonTime";
 
-const CurrentTime = dynamic(() => import("@/components/ui/CurrentTime").then(mod => mod.CurrentTime), {
+const CurrentTime = dynamic(() => import("@/components/CurrentTime").then(mod => mod.CurrentTime), {
   loading: () => <SkeletonTime />,
   ssr: false,
 });

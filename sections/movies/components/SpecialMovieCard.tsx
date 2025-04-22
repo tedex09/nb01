@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useFocusable } from "@noriginmedia/norigin-spatial-navigation";
-import { useMovieStore } from "@/features/movies/store/useMovieStore";
+import { useMovieStore } from "@sections/movies/store/useMovieStore";
 import { shallow } from "zustand/shallow";
 import { Play } from "lucide-react";
 

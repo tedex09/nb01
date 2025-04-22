@@ -60,3 +60,10 @@ body {
   color: hsl(var(--foreground));
   @apply bg-slate-900;
 }
+
+.glass {
+  @apply backdrop-blur-[0.5vw]
+  [background:linear-gradient(theme(colors.slate.900/.20),theme(colors.slate.900))_padding-box,linear-gradient(45deg,theme(colors.slate.800),theme(colors.slate.600/.8),theme(colors.slate.800))_border-box]
+  relative before:absolute before:inset-0 before:bg-[url('/images/noise.png')] before:bg-[length:10vw_10vw]
+  opacity-90 border border-transparent
+}

@@ -1,11 +1,13 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Header } from "@/components/ui/Header";
-import { Menu } from "@/components/ui/Menu";
-import { MovieHighlight } from "@/features/movies/components/MovieHighlight";
+import { Header } from "@ui/header";
+import { Menu } from "@ui/menu";
+import { MovieHighlight } from "@sections/movies/components/MovieHighlight";
+import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-navigation";
+import { useEffect } from "react";
 
-const MovieCarousel = dynamic(() => import("@/features/movies/components/MovieCarousel").then(mod => mod.MovieCarousel), {
+const MovieCarousel = dynamic(() => import("@sections/movies/components/MovieCarousel").then(mod => mod.MovieCarousel), {
   ssr: false,
 });
 
@@ -28,14 +30,25 @@ const mockMovies = {
 };
 
 export default function MoviesScreen() {
+
+  const { ref: navigationRef, focusKey: rootFocusKey, focusSelf } = useFocusable();
+  
+  useEffect(() => {
+    focusSelf();
+  }, [focusSelf]);
+
+
+
   return (
-    <main className="min-h-screen bg-black">
-      <Menu />
-      <MovieHighlight {...mockMovies.highlight} />
-      <div className="mt-[4vw]">
-        <MovieCarousel title="Trending Now" movies={mockMovies.trending} />
-        <MovieCarousel title="Popular on Nimbus" movies={mockMovies.popular} />
-      </div>
-    </main>
+    <FocusContext.Provider value={rootFocusKey}>
+      <main className="min-h-screen bg-slate-950" ref={navigationRef}>
+        <Menu />
+        {/* <MovieHighlight {...mockMovies.highlight} />
+        <div className="mt-[4vw]">
+          <MovieCarousel title="Trending Now" movies={mockMovies.trending} />
+          <MovieCarousel title="Popular on Nimbus" movies={mockMovies.popular} />
+        </div> */}
+      </main>
+    </FocusContext.Provider>
   );
 }
