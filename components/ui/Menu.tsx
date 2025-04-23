@@ -75,6 +75,7 @@ const MenuItem = ({
 
 export const Menu = () => {
   const { ref, focusKey } = useFocusable({
+    focusKey: 'menu',
     trackChildren: true,
     autoRestoreFocus: true,
   });

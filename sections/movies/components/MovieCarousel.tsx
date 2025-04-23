@@ -1,73 +1,97 @@
-"use client";
+'use client'
 
-import { useRef } from "react";
-import { motion } from "framer-motion";
-import dynamic from "next/dynamic";
-import LazyHydrate from "react-lazy-hydration";
-import { MovieCard } from "./MovieCard";
-
-const SpecialMovieCard = dynamic(() => import("./SpecialMovieCard").then(mod => mod.SpecialMovieCard), {
-  ssr: false,
-});
+import { useEffect, useRef, useState } from 'react'
+import {
+  FocusContext,
+  useFocusable
+} from '@noriginmedia/norigin-spatial-navigation'
+import { MovieItem } from './MovieItem'
 
 interface Movie {
-  id: string;
-  type: "default" | "special";
-  title: string;
-  posterUrl: string;
-  backdropUrl?: string;
+  id: string
+  coverUrl: string
 }
 
-interface MovieCarouselProps {
-  title: string;
-  movies: Movie[];
+interface Props {
+  movies: Movie[]
+  rowIndex: number
 }
 
-export const MovieCarousel = ({ title, movies }: MovieCarouselProps) => {
-  const containerRef = useRef<HTMLDivElement>(null);
+export const MovieCarousel = ({ movies, rowIndex }: Props) => {
+  const ITEM_WIDTH = 160
+  const ITEM_GAP = 16
+  const VISIBLE_ITEMS = 6
+  const FOCUS_POSITION = 1
 
-  const scrollToFocused = (element: HTMLElement) => {
-    const container = containerRef.current;
-    if (!container) return;
+  const MAX_SHIFT = movies.length - VISIBLE_ITEMS
 
-    const elementRect = element.getBoundingClientRect();
-    const containerRect = container.getBoundingClientRect();
+  const [focusedIndex, setFocusedIndex] = useState(0)
 
-    if (elementRect.left < containerRect.left) {
-      container.scrollLeft -= containerRect.left - elementRect.left + 20;
-    } else if (elementRect.right > containerRect.right) {
-      container.scrollLeft += elementRect.right - containerRect.right + 20;
-    }
-  };
+  const {
+    ref,
+    focusKey
+  } = useFocusable({
+    focusKey: `CAROUSEL-${rowIndex}`,
+    trackChildren: true
+  })
+
+  const isFixedPosition = focusedIndex <= MAX_SHIFT
+  const isFinalMovable = focusedIndex > MAX_SHIFT
+  const shiftIndex = isFinalMovable
+    ? movies.length - VISIBLE_ITEMS
+    : Math.max(0, focusedIndex - FOCUS_POSITION)
+
+  const translateX = shiftIndex * (ITEM_WIDTH + ITEM_GAP)
+
+  const focusOverlayOffset = isFixedPosition
+    ? FOCUS_POSITION * (ITEM_WIDTH + ITEM_GAP)
+    : (focusedIndex - shiftIndex) * (ITEM_WIDTH + ITEM_GAP)
 
   return (
-    <LazyHydrate whenVisible>
-      <div className="mb-[4vw]">
-        <h2 className="text-[2vw] font-bold text-white mb-[2vw] ml-[15vw]">{title}</h2>
-        <div
-          ref={containerRef}
-          className="flex gap-[1vw] overflow-x-auto pl-[15vw] pr-[4vw] pb-[2vw] scrollbar-hide"
-        >
-          {movies.map((movie) => (
-            movie.type === "special" ? (
-              <SpecialMovieCard
-                key={movie.id}
-                id={movie.id}
-                title={movie.title}
-                posterUrl={movie.posterUrl}
-                backdropUrl={movie.backdropUrl || movie.posterUrl}
-              />
-            ) : (
-              <MovieCard
-                key={movie.id}
-                id={movie.id}
-                title={movie.title}
-                posterUrl={movie.posterUrl}
-              />
-            )
-          ))}
+    <FocusContext.Provider value={focusKey}>
+      <div className="relative w-full py-4">
+        <div className="overflow-hidden w-full relative" ref={ref}>
+          {/* Focador fixo */}
+          <div
+            className="absolute top-0 left-0 w-[160px] h-[240px] border-2 border-white rounded pointer-events-none z-10 transition-all duration-300"
+            style={{ transform: `translateX(${focusOverlayOffset}px)` }}
+          />
+
+          {/* Carrossel */}
+          <div
+            className="flex transition-transform duration-300 ease-in-out"
+            style={{
+              transform: `translateX(-${translateX}px)`,
+              gap: `${ITEM_GAP}px`,
+              minWidth: 'max-content',
+            }}
+          >
+            {movies.map((movie, index) => {
+              let dimmed = false
+
+              if (isFixedPosition) {
+                dimmed = index < focusedIndex
+              } else if (isFinalMovable) {
+                dimmed = index === shiftIndex
+              } else {
+                dimmed = index < focusedIndex
+              }
+
+              return (
+                <MovieItem
+                  key={movie.id}
+                  movie={movie}
+                  rowIndex={rowIndex}
+                  itemIndex={index}
+                  onFocus={() => setFocusedIndex(index)}
+                  dimmed={dimmed}
+                  offsetFirstItem={index === 0 && focusedIndex === 0}
+                />
+              )
+            })}
+          </div>
         </div>
       </div>
-    </LazyHydrate>
-  );
-};
+    </FocusContext.Provider>
+  )
+}

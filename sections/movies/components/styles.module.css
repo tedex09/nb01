@@ -1,0 +1,13 @@
+/* components/MovieCarousel/styles.module.css */
+.focusOverlay {
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  width: 160px;
+  height: 240px;
+  border: 3px solid white;
+  border-radius: 0.5rem;
+  pointer-events: none;
+  z-index: 10;
+  transition: all 0.3s ease-in-out;
+}
