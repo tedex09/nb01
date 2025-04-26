@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowLeftCircle,
@@ -11,8 +12,10 @@ import {
 import {
   useFocusable,
   FocusContext,
+  KeyPressDetails,
+  setFocus
 } from "@noriginmedia/norigin-spatial-navigation";
-import { useEffect, useRef, useState } from "react";
+import { getLastFocusedKey } from '@sections/movies/lib/focusManager'
 
 const menuItems = [
   { icon: ArrowLeftCircle, label: "Voltar", key: "voltar" },
@@ -25,21 +28,20 @@ type MenuItemProps = {
   icon: any;
   label: string;
   focusKey: string;
-  onFocusChange: (key: string, focused: boolean) => void;
   expanded: boolean;
+  onArrowPress?: (direction: string, props: object, details: KeyPressDetails) => boolean;
 };
 
 const MenuItem = ({
   icon: Icon,
   label,
   focusKey,
-  onFocusChange,
   expanded,
+  onArrowPress
 }: MenuItemProps) => {
-  const { ref, focused } = useFocusable({ focusKey });
+  const { ref, focused } = useFocusable({ focusKey, onArrowPress });
 
   useEffect(() => {
-    onFocusChange(focusKey, focused);
 
     if (focused) {
       const audio = new Audio("/sounds/focus.mp3");
@@ -74,30 +76,31 @@ const MenuItem = ({
 
 
 export const Menu = () => {
-  const { ref, focusKey } = useFocusable({
+  const { ref, focusKey, hasFocusedChild } = useFocusable({
     focusKey: 'menu',
     trackChildren: true,
-    autoRestoreFocus: true,
+    saveLastFocusedChild: true,
+    isFocusBoundary: true, 
+    focusBoundaryDirections: ['up', 'down', 'left']
   });
 
-  const [isAnyFocused, setIsAnyFocused] = useState(false);
-  const focusedItemsRef = useRef<Set<string>>(new Set());
-
-  const handleFocusChange = (key: string, focused: boolean) => {
-    if (focused) {
-      focusedItemsRef.current.add(key);
-    } else {
-      focusedItemsRef.current.delete(key);
+  const onArrowPress = (direction: string) => {
+    if (direction === "right") {
+      const lastKey = getLastFocusedKey();
+      if (lastKey) {
+        setFocus(lastKey);
+        return false;
+      }
     }
-    setIsAnyFocused(focusedItemsRef.current.size > 0);
-  };
+    return true;
+  }
 
   return (
     <FocusContext.Provider value={focusKey}>
       <div className="fixed h-full flex items-center z-50">
         <motion.nav
           ref={ref}
-          animate={{ width: isAnyFocused ? "18vw" : "8vw" }}
+          animate={{ width: hasFocusedChild ? "18vw" : "auto" }}
           transition={{ duration: 0.3 }}
           className="flex flex-col items-start justify-start h-[90vh] py-[2vw] ml-[1vw] rounded-[2vw] 
             backdrop-blur-[0.5vw] shadow-2xl px-[1vw]
@@ -112,7 +115,7 @@ export const Menu = () => {
               alt=""
               className="w-[3vw] h-[3vw] rounded-full object-cover border border-white/20"
             />
-            {isAnyFocused && (
+            {hasFocusedChild && (
               <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -133,8 +136,8 @@ export const Menu = () => {
                 icon={item.icon}
                 label={item.label}
                 focusKey={item.key}
-                onFocusChange={handleFocusChange}
-                expanded={isAnyFocused}
+                expanded={hasFocusedChild}
+                onArrowPress={onArrowPress}
               />
             ))}
           </ul>
@@ -145,8 +148,8 @@ export const Menu = () => {
               icon={GearIcon}
               label="Configurações"
               focusKey="configuracoes"
-              onFocusChange={handleFocusChange}
-              expanded={isAnyFocused}
+              expanded={hasFocusedChild}
+              onArrowPress={onArrowPress}
             />
           </div>
 

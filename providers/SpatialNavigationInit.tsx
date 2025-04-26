@@ -7,7 +7,7 @@ export default function SpatialNavigationInit() {
   useEffect(() => {
     init({
       debug: false,
-      visualDebug: false,
+      visualDebug: false
     });
   }, []);
 
